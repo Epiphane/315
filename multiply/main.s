@@ -33,6 +33,7 @@ cycle:
 
     /* Get second number */
     ldr r0, printdata
+    mov r1, #2
     bl printf
 
     /* Set r1 = sp */
@@ -42,7 +43,7 @@ cycle:
     bl __isoc99_scanf
     
     /* Compute product */
-    ldr r1, [sp]
+    ldr r0, [sp]
     ldr r1, [sp, #8]
     bl mult
 

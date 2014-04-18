@@ -5,27 +5,65 @@
     .fpu vfp
     .text
 
-    /* Prints out two numbers */
-    .global print
-print: 
-        
+    /* Does one section of get numbers & multiply */
+    .global iocycle
+iocycle:
+    push {lr}    
+
+    /* Push sp down 16 */
+    mov r0, sp
+    mov r1, #-16
+    bl add
+    mov sp, r0
+
+cycle:
+    /* Get first number */
+    ldr r0, printdata
+    mov r1, #1
+    bl printf
+
+    /* Set r1 = sp + 8 */
+    mov r0, sp
+    mov r1, #8
+    bl add
+    mov r1, r0
+    /* Scan in first number */
+    ldr r0, =scanstr
+    bl __isoc99_scanf
+
+    /* Get second number */
+    ldr r0, printdata
+    bl printf
+
+    /* Set r1 = sp */
+    mov r1, sp
+    /* Scan in second number */
+    ldr r0, =scanstr
+    bl __isoc99_scanf
+    
+    /* Compute product */
+    ldr r1, [sp]
+    ldr r1, [sp, #8]
+    bl mult
+
+    /* Move product */
+    mov r1, r0
+    ldr r0, printdata+4
+    bl printf
+
+    /* Again? */
+    bl getchar
+    cmp r0, #121
+    beq cycle
+endio:
+    pop {pc}
 
     .global main
 main:
     push {lr}
 
-    mov r0, #7
-    mov r1, #6
+    bl iocycle
 
-    /* Multiply the two */
-    bl mult
-
-    mov r3, r0
-    mov r1, #7
-    mov r2, #6
-    ldr r0, =string
-
-    bl printf
     pop {pc}
 end:
 
@@ -89,5 +127,15 @@ endmult:
     mov r0, r4
     pop {r4, r5, r6, pc}
 
-string:
-    .asciz "%d * %d = %d\n"
+scanstr:
+    .asciz " %d"
+
+printdata:
+    .word enternum
+    .word product
+
+enternum:
+    .asciz "Enter number %d: "
+    
+product:
+    .asciz "Product is: %d\nAgain? "

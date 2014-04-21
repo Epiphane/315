@@ -10,21 +10,22 @@
 add:
     push {lr}
     
-    /* Get XOR */
-    eors r3, r0, r1
+keepadding:
 
     /* Get AND */
     ands r2, r0, r1
-    
-    /* Put the XOR in r0 */
-    mov r0, r3
 
+    /* Get XOR */
+    eor r0, r0, r1
+   
+    /* Uses the result of 'and' to break or not */
     beq endadd
 
     /* Shift the carry left 1 */
     lsls r1, r2, #1
 
     /* Add the XOR + AND(shifted) */
-    bl add
+    bl keepadding
+
 endadd:
     pop {pc}

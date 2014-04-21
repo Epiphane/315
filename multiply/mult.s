@@ -82,8 +82,7 @@ endwhile:
     lsls r6, r6, #1
 
     /* Break on r5 == 0 */
-    cmp r5, #0
-    bne while
+    cbz r5, while
 
 endmult:
     mov r0, r4

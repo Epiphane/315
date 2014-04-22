@@ -9,17 +9,39 @@
     /* Multiply the numbers in r0 and r1 */
     .global mult
 mult:
-    push {r5, r6, r7, lr, r0, r1}
+    push {r4, r5, r6, r7, lr, r0, r1}
 
-    mov r7, #0
+        mov r7, #0
 
     /* Pass parameters to variable registers */
     pop {r5, r6}
+        /* COUNTER */
+        add r7, r7, #2
 
+super:
+    /* Check to see if it's easier to do rev(r5) */
+    mov r4, #0
+    rev16 r0, r5
+    cmp r0, r5
+        /* COUNTER */
+        add r7, r7, #4
+
+    /* If rev(r5) > r5 (unsigned), then we don't want it */
+    bls prep
+
+    /* Otherwise switch them! */
+    mov r1, #1
+    bl add
+    /* mov r5, r0 */
+    mov r4, #1
+        /* COUNTER */
+        add r7, r7, #2
+
+prep:
     /* Product = 0 */
     mov r0, #0
         /* COUNTER */
-        add r7, r7, #3
+        add r7, r7, #1
 
 while:
     /* If LSB(r5) == 0 Skip to endwhile */ 
@@ -46,18 +68,30 @@ endwhile:
     bne while
 
 endmult:
-        /* COUNTER (for pop) */
-        add r7, r7, #1
+    /* Don't do this if we didn't flip any bits */
+    cmp r4, #0
+        /* COUNTER (1 for branch) */
+        add r7, r7, #2
+    beq return
 
+    /* mvns r0, r0 */
+    mov r1, #1
+        /* COUNTER (1 for branch) */
+        add r7, r7, #3
+    bl add
+
+return:
     /* Display */
     mov r5, r0
     ldr r0, =display
     mov r1, r7
     bl printf
-
     mov r0, r5
+    /* End display */
 
-    pop {r5, r6, r7, pc}
+        /* COUNTER (for pop) */
+        add r7, r7, #1
+    pop {r4, r5, r6, r7, pc}
 
 
 display:

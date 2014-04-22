@@ -59,5 +59,6 @@ endmult:
 
     pop {r5, r6, r7, pc}
 
+
 display:
-    .asciz "Number of commands: %d\n"
+    .asciz "%d\n"

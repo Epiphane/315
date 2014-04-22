@@ -20,7 +20,9 @@ cycle:
     /* Get first number */
     ldr r0, printdata
     mov r1, #1
+    /*
     bl printf
+    */
 
     /* Set r1 = sp + 8 */
     mov r0, sp
@@ -34,7 +36,9 @@ cycle:
     /* Get second number */
     ldr r0, printdata
     mov r1, #2
+    /*
     bl printf
+    */
 
     /* Set r1 = sp */
     mov r1, sp
@@ -42,6 +46,12 @@ cycle:
     ldr r0, =scanstrnum
     bl __isoc99_scanf
     
+    /* Display */
+    ldr r0, =firstdisp
+    ldr r1, [sp]
+    ldr r2, [sp, #8]
+    bl printf
+
     /* Compute product */
     ldr r0, [sp]
     ldr r1, [sp, #8]
@@ -50,7 +60,9 @@ cycle:
     /* Move product */
     mov r1, r0
     ldr r0, printdata+4
+    
     bl printf
+    
 
     /* Gotta get the last character out of the buffer */
     bl getchar
@@ -90,4 +102,7 @@ enternum:
     .asciz "Enter number %d: "
     
 product:
-    .asciz "Product is: %d\nAgain? "
+    .asciz "%d\n"
+
+firstdisp:
+    .asciz "%d %d "

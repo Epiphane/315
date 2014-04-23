@@ -21,18 +21,18 @@ mult:
 super:
     /* Check to see if it's easier to do rev(r5) */
     mov r4, #0
-    rev16 r0, r5
+    mvn r0, r5
     cmp r0, r5
         /* COUNTER */
         add r7, r7, #4
 
-    /* If rev(r5) > r5 (unsigned), then we don't want it */
-    bls prep
+    /* If not(r5) > r5 (unsigned), then we don't want it */
+    bhi prep
 
     /* Otherwise switch them! */
     mov r1, #1
     bl add
-    /* mov r5, r0 */
+    mov r5, r0
     mov r4, #1
         /* COUNTER */
         add r7, r7, #2
@@ -74,7 +74,7 @@ endmult:
         add r7, r7, #2
     beq return
 
-    /* mvns r0, r0 */
+    mvns r0, r0
     mov r1, #1
         /* COUNTER (1 for branch) */
         add r7, r7, #3

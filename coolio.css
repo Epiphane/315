@@ -15,6 +15,10 @@ td:first-child {
    font-weight: bold;
 }
 
+tr:nth-child(n+2):hover {
+   background: #f5f5f5;
+}
+
 tr:nth-child(2n+3) {
    background: #eee;
 }
@@ -22,4 +26,12 @@ tr:nth-child(2n+3) {
 td, th {
    border: 1px solid gray;
    padding: 5px;
+}
+
+audio {
+    display: none;
+}
+
+body {
+    background-image: url('http://cdn0.dailydot.com/uploaded/images/original/2013/1/7/cage6.jpg');
 }

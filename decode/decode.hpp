@@ -10,6 +10,8 @@
 
 using namespace std;
 
+#define WORD_SIZE 4
+
 /* DEFINES FOR TYPES AND OPS */
 #define ALU_TYPE 0
 #define SP_TYPE 17
@@ -177,6 +179,22 @@ struct SP_Type {
    } instr;
 };
 
+struct LD_ST_ST_IMM_Instr {
+   unsigned int rt: 3;
+   unsigned int rn: 3;
+   unsigned int imm: 5;
+   unsigned int op: 5;
+   unsigned int pad: 16;
+};
+
+struct LD_ST_LD_IMM_Instr {
+   unsigned int rt: 3;
+   unsigned int rn: 3;
+   unsigned int imm: 5;
+   unsigned int op: 5;
+   unsigned int pad: 16;
+};
+
 struct LD_ST_Type {
    union {
       struct {
@@ -201,6 +219,8 @@ struct LD_ST_Type {
          unsigned int op: 5;
          unsigned int pad: 16;
       } ld_st_imm;
+      LD_ST_ST_IMM_Instr str_imm;
+      LD_ST_LD_IMM_Instr ldr_imm;
    } instr;
 };
 
@@ -364,7 +384,10 @@ struct UNCOND_Type {
 
 
 struct ADD_SP_Instr {
-  // TODO
+   unsigned int imm: 8;
+   unsigned int rd: 3;
+   unsigned int op: 5;
+   unsigned int pad: 16;
 };
 
 struct ADD_SP_Type {
@@ -377,6 +400,10 @@ struct ADD_SP_Type {
       ADD_SP_Instr add;
    } instr; 
 };
+
+//struct MOV_SP_Type {
+
+//};
 
 class ALL_Types{ 
    public:

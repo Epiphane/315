@@ -18,7 +18,7 @@ unsigned int getPCData(ifstream & in, unsigned int pc) {
       in >> data;
    } 
    if (in >> data) {
-      cout << hex << addr << ":     ";
+      //cout << hex << addr << ":     "; // TODO: Why is this in the default code if it's not in the gold output ._.
       return data;
    }
    else {
@@ -33,7 +33,7 @@ unsigned int getNextValidInstr(ifstream & in) {
    while (in >> addr >> data && data > 0x10000) {
    }
    if (addr != 0xda) {
-      cout << hex << addr << ":     ";
+     // cout << hex << addr << ":     "; // TODO: This doesn't show up in the gold output... wut teh heck meng
    }
    return data;
 }
@@ -104,6 +104,9 @@ int main(int argc, char ** argv) {
 }
 
 int classify_type(const ALL_Types data) {
+   // Reset cout to Decimal mode each time
+   cout << dec;
+
    if (data.type.alu.instr.class_type.type_check == ALU_TYPE) {
       if (data.type.alu.instr.lsli.op == ALU_LSLI_OP) {
          cout << "lsl ";
@@ -124,7 +127,7 @@ int classify_type(const ALL_Types data) {
          cout << "#" << data.type.alu.instr.asri.imm << endl;
       }
       else if (data.type.alu.instr.addr.op == ALU_ADDR_OP) {
-         cout << "add ";
+         cout << "adds ";
          cout << reg(data.type.alu.instr.addr.rd) << ", ";
          cout << reg(data.type.alu.instr.addr.rn) << ", ";
          cout << reg(data.type.alu.instr.addr.rm) << endl;
@@ -239,9 +242,13 @@ int classify_type(const ALL_Types data) {
          cout << ", " << reg(data.type.sp.instr.cmp.rm) << endl;
       }
       else if (data.type.sp.instr.mov.op == 2) { // MOV
-         cout << "mov ";
-         cout << reg(data.type.sp.instr.mov.N * 8 + data.type.sp.instr.mov.rn);
-         cout << ", " << reg(data.type.sp.instr.mov.rm) << endl;
+         //if (data.type.sp.instr.mov.N) {
+           // cout << "add sp what hte fuck" << data.type.addsp.instr.add.imm << endl;
+       //  }
+      //   else {
+            cout << "mov sp";
+            cout << ", " << reg(data.type.sp.instr.mov.rm) << endl;
+       //  }
       }
       else {
          if (data.type.sp.instr.blx.N == 1) // BLX
@@ -253,11 +260,14 @@ int classify_type(const ALL_Types data) {
          
       }
 
+//      cout << "add sp, " << data.type.addsp.instr.add.imm << endl; 
+      cout << "add sp, #" << (data.type.addsp.instr.add.imm % 2 << 4) << endl; 
       return SP_TYPE;
    }
    else if (data.type.uncond.instr.class_type.type_check == UNCOND_TYPE) {
       cout << "b ";
       cout << "0x" << hex << data.type.uncond.instr.b.imm;
+      cout << endl;
       return UNCOND_TYPE;
    }
    else if (data.type.misc.instr.class_type.type_check == MISC_TYPE) {
@@ -299,8 +309,12 @@ int classify_type(const ALL_Types data) {
          else if (data.type.misc.instr.bkpt.op == 14) { // BKPT
             cout << "bkpt " << "# " << data.type.misc.instr.bkpt.imm << endl;
          }
-         else if (data.type.misc.instr.push.op == MISC_PUSH_OP) {
-            cout << "push ";
+         else if (data.type.misc.instr.push.op == MISC_PUSH_OP || data.type.misc.instr.push.op == MISC_POP_OP) {
+            if (data.type.misc.instr.push.op == MISC_PUSH_OP)
+               cout << "push ";
+            else if (data.type.misc.instr.pop.op == MISC_POP_OP)
+               cout << "pop ";
+
             cout << "{";
             if (data.type.misc.instr.push.reg_list & 1) {
                cout << "r0, ";
@@ -326,7 +340,13 @@ int classify_type(const ALL_Types data) {
             if (data.type.misc.instr.push.reg_list & 128) {
                cout << "r7, ";
             }
-            cout << "lr}" << endl;
+
+            if (data.type.misc.instr.push.op == MISC_PUSH_OP)
+               cout << "lr}" << endl;
+            else if (data.type.misc.instr.pop.op == MISC_POP_OP)
+               cout << "pc}" << endl;
+
+
          }
          else if (data.type.misc.instr.sub.op == MISC_SUB_OP) {
             cout << "sub sp, #";
@@ -339,7 +359,8 @@ int classify_type(const ALL_Types data) {
       else if (data.type.cond.instr.class_type.type_check == COND_TYPE) {
          cout << "b";
          data.printCond(data.type.cond.instr.b.cond);
-         cout << "0x" << hex << data.type.cond.instr.b.imm << endl;
+         cout << " 0x" << hex << data.type.cond.instr.b.imm;
+         cout << endl;
          return COND_TYPE;
       }
       else if (data.type.ldm.instr.class_type.type_check == LDM_TYPE) {
@@ -358,9 +379,13 @@ int classify_type(const ALL_Types data) {
          cout << "ldr ";
          cout << reg(data.type.ldrl.instr.ldrl.rt);
          cout << " 0x" << hex << data.type.ldrl.instr.ldrl.imm << endl;
+         return LDRL_TYPE;
       }
       else if (data.type.addsp.instr.class_type.type_check == ADD_SP_TYPE) {
-         //return ADD_SP_TYPE;
+         cout << "add ";
+         cout << reg(data.type.addsp.instr.add.rd) << ", sp, #";
+         cout << data.type.addsp.instr.add.imm << endl;
+         return ADD_SP_TYPE;
       }
       else {
          // Complete the rest of these instruction classes
@@ -368,15 +393,26 @@ int classify_type(const ALL_Types data) {
          }
          else if (data.type.ld_st.instr.class_type.opA == LD_ST_IMM_OPA) {
             if (data.type.ld_st.instr.class_type.opB == LD_ST_OPB_STR) {
+               cout << "str " << reg(data.type.ld_st.instr.str_imm.rt);
+               cout << ", [" << reg(data.type.ld_st.instr.str_imm.rn) << ", #";
+               cout << data.type.ld_st.instr.str_imm.imm * WORD_SIZE << "]" << endl;
+               return LD_ST_OPB_STR;
             }
             else if (data.type.ld_st.instr.class_type.opB == LD_ST_OPB_LDR) {
+               cout << "ldr " << reg(data.type.ld_st.instr.ldr_imm.rt);
+               cout << ", [" << reg(data.type.ld_st.instr.ldr_imm.rn) << ", #";
+               cout << data.type.ld_st.instr.ldr_imm.imm * WORD_SIZE << "]" << endl;
+               return LD_ST_OPB_LDR;
             }
          }
          else if (data.type.ld_st.instr.class_type.opA == LD_ST_IMMB_OPA) {
+            cout << "u a type B babe" << endl;
          }
          else if (data.type.ld_st.instr.class_type.opA == LD_ST_IMMH_OPA) {
+            cout << "u a type H babe" << endl;
          }
          else if (data.type.ld_st.instr.class_type.opA == LD_ST_IMMSP_OPA) {
+            cout << "u a type SP babe" << endl;
          }
          else {
             cout << "NOT A VALID INSTRUCTION" << endl;

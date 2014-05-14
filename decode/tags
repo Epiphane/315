@@ -1,0 +1,51 @@
+ADD_SP_Instr	decode.hpp	/^struct ADD_SP_Instr {$/
+ADD_SP_Type	decode.hpp	/^struct ADD_SP_Type {$/
+ALU_ADD3I_Instr	decode.hpp	/^struct ALU_ADD3I_Instr {$/
+ALU_ADD8I_Instr	decode.hpp	/^struct ALU_ADD8I_Instr {$/
+ALU_ADDR_Instr	decode.hpp	/^struct ALU_ADDR_Instr {$/
+ALU_ASRI_Instr	decode.hpp	/^typedef ALU_LSLI_Instr ALU_ASRI_Instr;$/
+ALU_CMP8I_Instr	decode.hpp	/^typedef ALU_ADD8I_Instr ALU_CMP8I_Instr;$/
+ALU_LSLI_Instr	decode.hpp	/^struct ALU_LSLI_Instr {$/
+ALU_LSRI_Instr	decode.hpp	/^typedef ALU_LSLI_Instr ALU_LSRI_Instr;$/
+ALU_MOV8I_Instr	decode.hpp	/^typedef ALU_ADD8I_Instr ALU_MOV8I_Instr;$/
+ALU_SUB3I_Instr	decode.hpp	/^typedef ALU_ADD3I_Instr ALU_SUB3I_Instr;$/
+ALU_SUB8I_Instr	decode.hpp	/^typedef ALU_ADD8I_Instr ALU_SUB8I_Instr;$/
+ALU_SUBR_Instr	decode.hpp	/^typedef ALU_ADDR_Instr ALU_SUBR_Instr;$/
+ALU_Type	decode.hpp	/^struct ALU_Type {$/
+COND_B_Instr	decode.hpp	/^struct COND_B_Instr {$/
+COND_Type	decode.hpp	/^struct COND_Type {$/
+DP_Type	decode.hpp	/^struct DP_Type {$/
+LDM_Instr	decode.hpp	/^struct LDM_Instr {$/
+LDM_Type	decode.hpp	/^struct LDM_Type {$/
+LDRL_Instr	decode.hpp	/^struct LDRL_Instr {$/
+LDRL_Type	decode.hpp	/^struct LDRL_Type {$/
+LD_ST_LD_IMM_Instr	decode.hpp	/^struct LD_ST_LD_IMM_Instr {$/
+LD_ST_ST_IMM_Instr	decode.hpp	/^struct LD_ST_ST_IMM_Instr {$/
+LD_ST_Type	decode.hpp	/^struct LD_ST_Type {$/
+MISC_ADD_Instr	decode.hpp	/^struct MISC_ADD_Instr {$/
+MISC_BKPT_Instr	decode.hpp	/^struct MISC_BKPT_Instr {$/
+MISC_POP_Instr	decode.hpp	/^typedef MISC_PUSH_Instr MISC_POP_Instr;$/
+MISC_PUSH_Instr	decode.hpp	/^struct MISC_PUSH_Instr {$/
+MISC_REV16_Instr	decode.hpp	/^typedef MISC_SXTH_Instr MISC_REV16_Instr;$/
+MISC_REVSH_Instr	decode.hpp	/^typedef MISC_SXTH_Instr MISC_REVSH_Instr;$/
+MISC_REV_Instr	decode.hpp	/^typedef MISC_SXTH_Instr MISC_REV_Instr;$/
+MISC_SUB_Instr	decode.hpp	/^typedef MISC_ADD_Instr MISC_SUB_Instr;$/
+MISC_SXTB_Instr	decode.hpp	/^typedef MISC_SXTH_Instr MISC_SXTB_Instr;$/
+MISC_SXTH_Instr	decode.hpp	/^struct MISC_SXTH_Instr {$/
+MISC_Type	decode.hpp	/^struct MISC_Type {$/
+MISC_UXTB_Instr	decode.hpp	/^typedef MISC_SXTH_Instr MISC_UXTB_Instr;$/
+MISC_UXTH_Instr	decode.hpp	/^typedef MISC_SXTH_Instr MISC_UXTH_Instr;$/
+Mdecode.cc	decode.cc	/^int main(int argc, char ** argv) {$/
+SP_ADD_Instr	decode.hpp	/^struct SP_ADD_Instr {$/
+SP_BLX_Instr	decode.hpp	/^typedef SP_BX_Instr SP_BLX_Instr;$/
+SP_BX_Instr	decode.hpp	/^struct SP_BX_Instr {$/
+SP_CMP_Instr	decode.hpp	/^typedef SP_ADD_Instr SP_CMP_Instr;$/
+SP_MOV_Instr	decode.hpp	/^typedef SP_ADD_Instr SP_MOV_Instr;$/
+SP_Type	decode.hpp	/^struct SP_Type {$/
+STM_Instr	decode.hpp	/^struct STM_Instr {$/
+STM_Type	decode.hpp	/^struct STM_Type {$/
+UNCOND_B_Instr	decode.hpp	/^struct UNCOND_B_Instr {$/
+UNCOND_Type	decode.hpp	/^struct UNCOND_Type {$/
+classify_type	decode.cc	/^int classify_type(const ALL_Types data) {$/
+getNextValidInstr	decode.cc	/^unsigned int getNextValidInstr(ifstream & in) {$/
+getPCData	decode.cc	/^unsigned int getPCData(ifstream & in, unsigned int/

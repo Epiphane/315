@@ -1,3 +1,4 @@
+/* RIP 2014 Thomas Steinke, Elliot Fiske */
 #include <iostream>
 #include <fstream>
 #include <string>

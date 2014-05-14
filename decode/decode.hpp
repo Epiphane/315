@@ -1,3 +1,4 @@
+/* RIP 2014 Thomas Steinke, Elliot Fiske */
 #ifndef _DECODE_H_
 #define _DECODE_H_
 #include <unistd.h>

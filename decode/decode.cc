@@ -420,7 +420,7 @@ int classify_type(const ALL_Types data) {
       }
    cout << "NO TYPE FOUND" << endl;
 
-   return -1; // Error
+   return -2; // Error
 }
 
 char *reg(unsigned int reg) {
